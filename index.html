@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Custom Matrix Rain</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="matrix"></canvas>
+
+  <script>
+    // Get the canvas and context
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+
+    // Make canvas full screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Your custom text
+    const customText = "HAPPY BIRTHDAY WARLORD17 💻✨";
+    const characters = customText.split('');
+
+    // Font size and number of columns
+    const fontSize = 20;
+    const columns = canvas.width / fontSize;
+
+    // An array of drops for each column
+    const drops = [];
+    for (let i = 0; i < columns; i++) {
+      drops[i] = Math.random() * canvas.height;
+    }
+
+    // Draw the characters
+    function draw() {
+      // Fade the background slightly to create trail effect
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Set text color and font
+      ctx.fillStyle = "#00FF00"; // Your custom color here
+      ctx.font = `${fontSize}px monospace`;
+
+      // Loop over drops
+      for (let i = 0; i < drops.length; i++) {
+        // Pick a random character
+        const text = characters[Math.floor(Math.random() * characters.length)];
+
+        // Draw the character
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        // Reset drop to top randomly
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+
+        // Move drop down
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 50);
+
+    // Resize canvas when window resizes
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
